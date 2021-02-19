@@ -13,7 +13,7 @@ const movieSchema = new Schema({
   },
   // saved movie id from API
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   image: {
