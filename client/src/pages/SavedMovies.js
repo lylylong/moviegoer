@@ -74,7 +74,7 @@ const SavedMovies = () => {
                 ) : null}
                 <Card.Body>
                   <Card.Title>{movie.title}</Card.Title>
-                  <p className="small">Release Date: {movie.release_date}</p>
+                  <p className="small">Release Date: {movie.releaseDate}</p>
                   <Card.Text>{movie.description}</Card.Text>
                   <Button
                     className="btn-block btn-danger"

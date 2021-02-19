@@ -54,10 +54,14 @@ const SearchMovies = () => {
 
       const movieData = results.map((movie) => ({
         movieId: movie.id,
-        authors: movie.release_date || ["No release date"],
+        releaseDate:
+          movie.release_date || movie.publishedDate || "No release date",
         title: movie.title,
         description: movie.overview,
-        image: `https://image.tmdb.org/t/p/w500${movie.id}` || "",
+        image:
+          `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+          `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
+          "",
       }));
       // --------------------  revise url ------------------- //
 
@@ -143,7 +147,7 @@ const SearchMovies = () => {
                 ) : null}
                 <Card.Body>
                   <Card.Title>{movie.title}</Card.Title>
-                  <p className="small">Release Date: {movie.release_date}</p>
+                  <p className="small">Release Date: {movie.releaseDate}</p>
                   <Card.Text>{movie.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
