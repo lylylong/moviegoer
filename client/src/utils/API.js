@@ -52,7 +52,7 @@ export const deleteMovie = (movieId, token) => {
 
 // --------------------  revise url ------------------- //
 // make a search to the movies api
-export const searchGoogleMovies = (query) => {
-  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-};
+// export const searchGoogleMovies = (query) => {
+//   return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+// };
 // --------------------  revise url ------------------- //
