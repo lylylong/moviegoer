@@ -8,6 +8,9 @@ import SearchMovies from "./pages/SearchMovies";
 import SavedMovies from "./pages/SavedMovies";
 import Navbar from "./components/Navbar";
 
+// import `ChakraProvider` component
+import { ChakraProvider } from "@chakra-ui/react";
+
 const client = new ApolloClient({
   // retrieve the token from localStorage before each request
   request: (operation) => {
@@ -26,18 +29,22 @@ const client = new ApolloClient({
 function App() {
   // passing the client variable so the JSX will have access to the server's API data
   return (
-    <ApolloProvider client={client}>
-      <Router>
-        <>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={SearchMovies} />
-            <Route exact path="/saved" component={SavedMovies} />
-            <Route render={() => <h1 className="display-2">Wrong page!</h1>} />
-          </Switch>
-        </>
-      </Router>
-    </ApolloProvider>
+    <ChakraProvider>
+      <ApolloProvider client={client}>
+        <Router>
+          <>
+            <Navbar />
+            <Switch>
+              <Route exact path="/" component={SearchMovies} />
+              <Route exact path="/saved" component={SavedMovies} />
+              <Route
+                render={() => <h1 className="display-2">Wrong page!</h1>}
+              />
+            </Switch>
+          </>
+        </Router>
+      </ApolloProvider>
+    </ChakraProvider>
   );
 }
 

@@ -1,79 +1,76 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
+// import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
-
 import Auth from "../utils/auth";
+
+import {
+  Box,
+  Text,
+  Stack,
+  Flex,
+  MenuIcon,
+  useColorModeValue,
+} from "@chakra-ui/react";
+
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 const AppNavbar = () => {
   // set modal display state
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  // const { isOpen, onToggle } = useDisclosure();
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Container fluid>
-          <Navbar.Brand as={Link} to="/">
-            Moviegoer
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar" />
-          <Navbar.Collapse id="navbar">
-            <Nav className="ml-auto">
-              <Nav.Link as={Link} to="/">
-                Search Movies
-              </Nav.Link>
-              {/* if user is logged in show saved movies and logout */}
-              {Auth.loggedIn() ? (
-                <>
-                  <Nav.Link as={Link} to="/saved">
-                    See Your Movies
-                  </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
-                </>
-              ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>
-                  Login/Sign Up
-                </Nav.Link>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      {/* set modal data up */}
-      <Modal
-        size="lg"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby="signup-modal"
+    <Box>
+      <Flex
+        as="nav"
+        align="center"
+        justify="space-between"
+        wrap="wrap"
+        w="100%"
+        mb={8}
+        p={8}
+        bg={useColorModeValue("white", "gray.800")}
+        color={useColorModeValue("gray.600", "white")}
       >
-        {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey="login">
-          <Modal.Header closeButton>
-            <Modal.Title id="signup-modal">
-              <Nav variant="pills">
-                <Nav.Item>
-                  <Nav.Link eventKey="login">Login</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="signup">Sign Up</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tab.Content>
-              <Tab.Pane eventKey="login">
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-              <Tab.Pane eventKey="signup">
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-            </Tab.Content>
-          </Modal.Body>
-        </Tab.Container>
-      </Modal>
-    </>
+        <Box w="100px" color={["primary.500", "primary.500"]}>
+          <Text fontSize="lg" fontWeight="bold" as={Link} to="/">
+            Moviegoer
+          </Text>
+        </Box>
+
+        <Box display={{ base: "block", md: "none" }} onClick={toggle}>
+          {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+        </Box>
+
+        <Box
+          display={{ base: isOpen ? "block" : "none", md: "block" }}
+          flexBasis={{ base: "100%", md: "auto" }}
+        >
+          <Stack
+            spacing={8}
+            align="center"
+            justify={["center", "space-between", "flex-end", "flex-end"]}
+            direction={["column", "row", "row", "row"]}
+            pt={[4, 4, 0, 0]}
+          >
+            <Link>
+              <Text display="block" as={Link} to="/">
+                Home
+              </Text>
+            </Link>
+            <Link>
+              <Text display="block" as={Link} to="/saved">
+                Your Movies
+              </Text>
+            </Link>
+          </Stack>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
