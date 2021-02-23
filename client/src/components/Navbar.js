@@ -1,80 +1,96 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
+import { Box, Flex, Text, Button, Stack } from "@chakra-ui/react"
+import { Icon, createIcon, Image } from "@chakra-ui/react"
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 
 import Auth from "../utils/auth";
 
-const AppNavbar = () => {
-  // set modal display state
-  const [showModal, setShowModal] = useState(false);
+const MenuItems = (props) => {
+  const { children, isLast, to = "/", ...rest } = props
+  return (
+    <Text
+      mb={{ base: isLast ? 0 : 8, sm: 0 }}
+      mr={{ base: 0, sm: isLast ? 0 : 8 }}
+      display="block"
+      {...rest}
+    >
+      <Link to={to}>{children}</Link>
+    </Text>
+  )
+}
+
+const Header = (props) => {
+  const [show, setShow] = React.useState(false)
+  const toggleMenu = () => setShow(!show)
 
   return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Container fluid>
-          <Navbar.Brand as={Link} to="/">
-            Moviegoer
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar" />
-          <Navbar.Collapse id="navbar">
-            <Nav className="ml-auto">
-              <Nav.Link as={Link} to="/">
-                Search Movies
-              </Nav.Link>
-              {/* if user is logged in show saved movies and logout */}
-              {Auth.loggedIn() ? (
-                <>
-                  <Nav.Link as={Link} to="/saved">
-                    See Your Movies
-                  </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
-                </>
-              ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>
-                  Login/Sign Up
-                </Nav.Link>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      {/* set modal data up */}
-      <Modal
-        size="lg"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby="signup-modal"
-      >
-        {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey="login">
-          <Modal.Header closeButton>
-            <Modal.Title id="signup-modal">
-              <Nav variant="pills">
-                <Nav.Item>
-                  <Nav.Link eventKey="login">Login</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="signup">Sign Up</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tab.Content>
-              <Tab.Pane eventKey="login">
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-              <Tab.Pane eventKey="signup">
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-            </Tab.Content>
-          </Modal.Body>
-        </Tab.Container>
-      </Modal>
-    </>
-  );
-};
+    <Flex
+      as="nav"
+      align="center"
+      justify="space-between"
+      wrap="wrap"
+      w="100%"
+      mb={8}
+      p={8}
+      bg={["#D77DD1", "#D77DD1", "#D77DD1", "#D77DD1"]}
+      color={["white", "white", "primary.700", "primary.700"]}
+      {...props}
+    >
+      <Flex align="center">
+        {/* <Logo
+          w="100px"
+          color={["white", "white", "primary.500", "primary.500"]}
+        /> */}
+      </Flex>
 
-export default AppNavbar;
+      <Box display={{ base: "block", md: "none" }} onClick={toggleMenu}>
+        {show ? <CloseIcon /> : <HamburgerIcon />}
+      </Box>
+
+      <Box
+        display={{ base: show ? "block" : "none", md: "block" }}
+        flexBasis={{ base: "100%", md: "auto" }}
+      >
+        <Flex
+          align={["center", "center", "center", "center"]}
+          justify={["center", "space-between", "flex-end", "flex-end"]}
+          direction={["column", "row", "row", "row"]}
+          pt={[4, 4, 0, 0]}
+        >
+          <MenuItems to="/">Home</MenuItems>
+          <MenuItems to="/">Search Movies </MenuItems>
+          <MenuItems to="/saved">See Your Movies </MenuItems>
+          <MenuItems to="/signup" isLast>
+            <Button
+              size="sm"
+              rounded="md"
+              color={["black", "black", "black", "black"]}
+              bg={["white", "white", "primary.500", "primary.500"]}
+              _hover={{
+                bg: [
+                  "primary.100",
+                  "primary.100",
+                  "primary.600",
+                  "primary.600",
+                ],
+              }}
+            >
+              Create Account
+            </Button>
+          </MenuItems>
+        </Flex>
+      </Box>
+      <Box
+  backgroundImage="url('/client/public/Desktop_Header_Image.png')"
+  backgroundPosition="center"
+  backgroundRepeat="no-repeat"
+/>
+    </Flex>
+  )
+}
+
+export default Header
+
