@@ -93,10 +93,10 @@ Hero.propTypes = {
 }
 
 Hero.defaultProps = {
-  title: "React landing page with Chakra UI",
+  title: "to watch tonight",
   subtitle:
-    "This is the subheader section where you describe the basic benefits of your product",
-  image: "https://source.unsplash.com/collection/404339/800x600",
-  ctaText: "Create your account now",
+    "Start here. Find movies. Save them. Share them. Stop spending hours scrolling Netflix.",
+  image: "../../../public/Mobile_Header_Image.png"
+  ctaText: "sign up today",
   ctaLink: "/signup",
 }

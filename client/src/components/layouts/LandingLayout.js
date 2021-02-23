@@ -17,8 +17,8 @@ export default function LandingLayout(props) {
       <Header />
       {props.children}
       <Hero />
-      <Header />
-      <Header />
+      <LoginForm />
+      <SignupForm />
     
     </Flex>
   )

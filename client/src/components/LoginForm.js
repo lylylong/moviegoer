@@ -1,6 +1,6 @@
 // see SignupForm.js for comments
 import React, { useState, useEffect } from "react";
-// import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 // import { loginUser } from '../utils/API';
 import { useMutation } from "@apollo/react-hooks";

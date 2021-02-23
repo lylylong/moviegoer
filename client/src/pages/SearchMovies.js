@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-// import {
-//   Jumbotron,
-//   Container,
-//   Col,
-//   Form,
-//   Button,
-//   Card,
-//   CardColumns,
-// } from "react-bootstrap";
+import {
+  Jumbotron,
+  Container,
+  Col,
+  Form,
+  Button,
+  Card,
+  CardColumns,
+} from "react-bootstrap";
 
 import { useMutation } from "@apollo/react-hooks";
 import { SAVE_MOVIE } from "../utils/mutations";
@@ -99,7 +99,7 @@ const SearchMovies = () => {
 
   return (
     <>
-      {/* <Jumbotron fluid className="text-light bg-dark">
+      <Jumbotron fluid className="text-light bg-dark">
         <Container>
           <h1>Search for Movies!</h1>
           <Form onSubmit={handleFormSubmit}>
@@ -122,7 +122,7 @@ const SearchMovies = () => {
             </Form.Row>
           </Form>
         </Container>
-      </Jumbotron> */}
+      </Jumbotron>
 
       <Container>
         <h2>
