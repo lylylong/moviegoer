@@ -1,7 +1,9 @@
 import React from "react"
 import { Flex } from "@chakra-ui/react"
 import Header from "../sections/Header"
-import Footer from "../sections/Footer" 
+import Hero from "../sections/Hero"
+import LoginForm from "../LoginForm"
+import SignupForm from "../SignupForm"
 
 export default function LandingLayout(props) {
   return (
@@ -14,7 +16,10 @@ export default function LandingLayout(props) {
     >
       <Header />
       {props.children}
-      <Footer />
+      <Hero />
+      <Header />
+      <Header />
+    
     </Flex>
   )
 }

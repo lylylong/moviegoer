@@ -1,11 +1,11 @@
 import React from "react";
-import {
-  Jumbotron,
-  Container,
-  CardColumns,
-  Card,
-  Button,
-} from "react-bootstrap";
+// import {
+//   Jumbotron,
+//   Container,
+//   CardColumns,
+//   Card,
+//   Button,
+// } from "react-bootstrap";
 // import useQuery & useMutation
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { QUERY_ME } from "../utils/queries";

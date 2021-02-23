@@ -58,9 +58,8 @@ const Header = (props) => {
           pt={[4, 4, 0, 0]}
         >
           <MenuItems to="/">Home</MenuItems>
-          <MenuItems to="/how">How It works </MenuItems>
-          <MenuItems to="/faetures">Features </MenuItems>
-          <MenuItems to="/pricing">Pricing </MenuItems>
+          <MenuItems to="/">Search Movies </MenuItems>
+          <MenuItems to="/saved">See Your Movies </MenuItems>
           <MenuItems to="/signup" isLast>
             <Button
               size="sm"
