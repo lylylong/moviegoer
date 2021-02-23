@@ -2,7 +2,7 @@ export const getSavedMovieIds = () => {
   const savedMovieIds = localStorage.getItem("saved_movies")
     ? JSON.parse(localStorage.getItem("saved_movies"))
     : [];
-
+  // console.log(typeof savedMovieIds);
   return savedMovieIds;
 };
 
@@ -12,6 +12,7 @@ export const saveMovieIds = (movieIdArr) => {
   } else {
     localStorage.removeItem("saved_movies");
   }
+  // console.log(typeof movieIdArr);
 };
 
 export const removeMovieId = (movieId) => {
@@ -24,9 +25,15 @@ export const removeMovieId = (movieId) => {
   }
 
   const updatedSavedMovieIds = savedMovieIds?.filter(
-    (savedMovieId) => savedMovieId !== movieId
+    (savedMovieId) => savedMovieId !== parseInt(movieId)
   );
   localStorage.setItem("saved_movies", JSON.stringify(updatedSavedMovieIds));
 
+  // console.log(typeof movieId);
+  // console.log(typeof parseInt(movieId));
+  // console.log(movieId);
+  // console.log(savedMovieIds);
+  // console.log(typeof savedMovieIds);
+  // console.log(typeof savedMovieIds[0]);
   return true;
 };

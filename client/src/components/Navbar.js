@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+import { Navbar, Nav, Container, Modal } from "react-bootstrap";
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 import Auth from "../utils/auth";
 
 import {
+  Link,
   Box,
   Text,
   Stack,
@@ -21,6 +22,19 @@ import {
   // ModalFooter,
   // ModalBody,
   // ModalCloseButton,
+  Input,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
@@ -30,7 +44,7 @@ const AppNavbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [isOpenToggle, setIsOpen] = React.useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef();
+  const btnRef = React.useRef();
   const toggle = () => setIsOpen(!isOpenToggle);
 
   return (
@@ -47,9 +61,11 @@ const AppNavbar = () => {
           color={useColorModeValue("gray.600", "white")}
         >
           <Box w="100px" color={["primary.500", "primary.500"]}>
-            <Text fontSize="lg" fontWeight="bold" as={Link} to="/">
-              Moviegoer
-            </Text>
+            <Link href="/">
+              <Text fontSize="lg" fontWeight="bold">
+                Moviegoer
+              </Text>
+            </Link>
           </Box>
 
           <Box display={{ base: "block", md: "none" }} onClick={toggle}>
@@ -67,62 +83,57 @@ const AppNavbar = () => {
               direction={["column", "row", "row", "row"]}
               pt={[4, 4, 0, 0]}
             >
-              <Link>
-                <Text display="block" as={Link} to="/">
-                  Home
-                </Text>
+              <Link display="block" href="/">
+                <Text>Home</Text>
               </Link>
 
               {/* if user is logged in show saved movies and logout */}
               {Auth.loggedIn() ? (
                 <>
-                  <Link>
-                    <Text display="block" as={Link} to="/saved">
-                      Your Watchlist
-                    </Text>
+                  <Link href="/saved">
+                    <Text display="block">Your Watchlist</Text>
                   </Link>
                   <Link onClick={Auth.logout}>Logout</Link>
                 </>
               ) : (
-                <Link onClick={() => setShowModal(true)}>Login/Sign Up</Link>
+                <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+                  Login/Sign Up
+                </Button>
+                /*<Link onClick={() => setShowModal(true)}>Login/Sign Up</Link>*/
               )}
             </Stack>
           </Box>
         </Flex>
       </Box>
-      <Modal
-        size="lg"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby="signup-modal"
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
       >
-        {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey="login">
-          <Modal.Header closeButton>
-            <Modal.Title id="signup-modal">
-              <Nav variant="pills">
-                <Nav.Item>
-                  <Nav.Link eventKey="login">Login</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="signup">Sign Up</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tab.Content>
-              <Tab.Pane eventKey="login">
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-              <Tab.Pane eventKey="signup">
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-            </Tab.Content>
-          </Modal.Body>
-        </Tab.Container>
-      </Modal>
-      ;
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+
+            <Tabs>
+              <TabList>
+                <Tab>Login</Tab>
+                <Tab>Sign Up</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <LoginForm handleModalClose={() => setShowModal(false)} />
+                </TabPanel>
+                <TabPanel>
+                  <SignUpForm handleModalClose={() => setShowModal(false)} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </>
   );
 };
