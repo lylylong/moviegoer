@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Modal } from "react-bootstrap";
+// import { Navbar, Nav, Container, Modal } from "react-bootstrap";
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 import Auth from "../utils/auth";
@@ -56,13 +56,13 @@ const AppNavbar = () => {
           justify="space-between"
           wrap="wrap"
           w="100%"
-          p={8}
+          p={6}
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.600", "white")}
         >
-          <Box w="100px" color={["primary.500", "primary.500"]}>
+          <Box w="150px" color={["primary.500", "primary.500"]}>
             <Link href="/">
-              <Text fontSize="lg" fontWeight="bold">
+              <Text fontSize="lg" fontWeight="bold" fontSize="2xl">
                 Moviegoer
               </Text>
             </Link>
@@ -96,7 +96,7 @@ const AppNavbar = () => {
                   <Link onClick={Auth.logout}>Logout</Link>
                 </>
               ) : (
-                <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+                <Button ref={btnRef} colorScheme="telegram" onClick={onOpen}>
                   Login/Sign Up
                 </Button>
                 /*<Link onClick={() => setShowModal(true)}>Login/Sign Up</Link>*/
