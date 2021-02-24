@@ -37,7 +37,6 @@ export const SAVE_MOVIE = gql`
         description
         title
         image
-        link
       }
     }
   }
@@ -54,7 +53,6 @@ export const REMOVE_MOVIE = gql`
         description
         title
         image
-        link
       }
     }
   }

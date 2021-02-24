@@ -15,3 +15,40 @@ h6 {
   font-weight: 300;
   font-style: italic;
 }
+
+.background-img {
+  background-image: url("../src/images/background-mobile.jpg");
+  padding: 0;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-color: #d684d8;
+}
+.mask {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.jumbotron {
+  margin: 0 0 20px 0;
+}
+.recommendations {
+  font-size: larger;
+  margin-bottom: 10px;
+  color: lemonchiffon;
+}
+.view-movie {
+  font-size: larger;
+  color: lemonchiffon;
+}
+.bg-color {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.card {
+  border: none;
+  border-radius: 0.5em;
+}
+.round-border {
+  border-radius: 0.5em;
+}
+.fw-bolder {
+  font-weight: 800;
+}
