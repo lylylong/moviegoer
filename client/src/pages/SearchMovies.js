@@ -76,7 +76,7 @@ const SearchMovies = () => {
         const movieData = data.results.map((movie) => ({
           movieId: movie.id,
           releaseDate: movie.release_date || movie.publishedDate || "TBA",
-          title: movie.title,
+          title: movie.title || movie.name,
           description: movie.overview,
           image:
             `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
@@ -102,7 +102,7 @@ const SearchMovies = () => {
         const movieData = data.results.map((movie) => ({
           movieId: movie.id,
           releaseDate: movie.release_date || movie.publishedDate || "TBA",
-          title: movie.title,
+          title: movie.title || movie.name,
           description: movie.overview,
           image:
             `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
