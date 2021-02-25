@@ -31,9 +31,10 @@ const SearchMovies = () => {
   const [saveMovie, { error }] = useMutation(SAVE_MOVIE);
 
   // set up useEffect hook to save `savedMovieIds` list to localStorage on component unmount
-  useEffect(() => {
-    return () => saveMovieIds(savedMovieIds);
-  });
+  // useEffect(() => {
+  //   // console.log(savedMovieIds);
+  //   return () => saveMovieIds(savedMovieIds);
+  // }, [savedMovieIds]);
 
   function handleLoad() {
     const https = require("https");
@@ -57,8 +58,6 @@ const SearchMovies = () => {
             "",
         }));
         setDisplayMovies(movieData);
-        // console.log(movieDisplay);
-        // return movieDisplay;
       });
     });
   }
@@ -85,8 +84,6 @@ const SearchMovies = () => {
             "",
         }));
         setDisplayMovies(movieData);
-        // console.log(movieDisplay);
-        // return movieDisplay;
       });
     });
   }
@@ -113,8 +110,6 @@ const SearchMovies = () => {
             "",
         }));
         setDisplayMovies(movieData);
-        // console.log(movieDisplay);
-        // return movieDisplay;
       });
     });
   }
@@ -131,36 +126,29 @@ const SearchMovies = () => {
     if (!searchInput) {
       return false;
     }
-    // --------------------  revise url ------------------- //
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=018c380ce92d45e85123258d739abb6e&query=${searchInput}`
-      );
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { results } = await response.json();
-
-      const movieData = results.map((movie) => ({
-        movieId: movie.id,
-        releaseDate:
-          movie.release_date || movie.publishedDate || "No release date",
-        title: movie.title,
-        description: movie.overview,
-        image:
-          `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
-          `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
-          "",
-      }));
-      // --------------------  revise url ------------------- //
-
-      setSearchedMovies(movieData);
-      setSearchInput("");
-    } catch (error) {
-      console.error(error);
-    }
+    const https = require("https");
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=018c380ce92d45e85123258d739abb6e&query=${searchInput}`;
+    https.get(url, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        const movieData = data.results.map((movie) => ({
+          movieId: movie.id,
+          releaseDate: movie.release_date || movie.publishedDate || "TBA",
+          title: movie.title,
+          description: movie.overview,
+          image:
+            `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+            `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
+            "",
+        }));
+        setDisplayMovies(movieData);
+      });
+    });
   };
 
   // create function to handle saving a movie to our database
@@ -184,8 +172,16 @@ const SearchMovies = () => {
         // user inputs
         variables: { movieData: { ...movieToSave } },
       });
-      // console.log(savedMovieIds);
+
       // take the token and will set it to localStorage
+      const currentLocalMovieIds =
+        JSON.parse(localStorage.getItem("saved_movies")) || [];
+      currentLocalMovieIds.push(movieToSave.movieId);
+      localStorage.setItem(
+        "saved_movies",
+        JSON.stringify(currentLocalMovieIds)
+      );
+      // change button texts
       setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
     } catch (error) {
       console.error(error);
