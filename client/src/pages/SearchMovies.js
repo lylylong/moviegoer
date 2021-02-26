@@ -53,9 +53,10 @@ const SearchMovies = () => {
           title: movie.title || movie.name,
           description: movie.overview,
           image:
-            `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
-            `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
-            "",
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
         }));
         setDisplayMovies(movieData);
       });
@@ -79,9 +80,10 @@ const SearchMovies = () => {
           title: movie.title || movie.name,
           description: movie.overview,
           image:
-            `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
-            `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
-            "",
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
         }));
         setDisplayMovies(movieData);
       });
@@ -105,9 +107,10 @@ const SearchMovies = () => {
           title: movie.title || movie.name,
           description: movie.overview,
           image:
-            `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
-            `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
-            "",
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
         }));
         setDisplayMovies(movieData);
       });
@@ -142,9 +145,10 @@ const SearchMovies = () => {
           title: movie.title,
           description: movie.overview,
           image:
-            `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
-            `https://image.tmdb.org/t/p/w500${movie.backdrop_path}` ||
-            "",
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
         }));
         setDisplayMovies(movieData);
         setSearchInput("");
