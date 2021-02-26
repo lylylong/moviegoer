@@ -147,6 +147,7 @@ const SearchMovies = () => {
             "",
         }));
         setDisplayMovies(movieData);
+        setSearchInput("");
       });
     });
   };
