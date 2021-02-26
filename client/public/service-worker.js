@@ -8,13 +8,9 @@ const DATA_CACHE_NAME = "data-cache-" + VERSION;
 const FILES_TO_CACHE = [
   "./index.html",
   "./manifest.json",
-  "../src/index.css",
-  "../src/App.js",
-  "../src/index.js",
   "./logo192.png",
   "./logo512.png",
   "./favicon.ico",
-  "../src/images/background-mobile.jpg",
 ];
 
 // install the service worker
