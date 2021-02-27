@@ -12,11 +12,10 @@ const typeDefs = gql`
 
   type Movie {
     movieId: ID!
-    authors: [String]
+    releaseDate: String
     description: String
     title: String!
     image: String
-    link: String
   }
 
   type Auth {
@@ -26,11 +25,10 @@ const typeDefs = gql`
 
   input MovieInput {
     movieId: ID!
-    authors: [String]
+    releaseDate: String
     description: String
     title: String!
     image: String
-    link: String
   }
 
   type Query {

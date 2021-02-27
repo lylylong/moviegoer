@@ -17,8 +17,11 @@ import { saveMovieIds, getSavedMovieIds } from "../utils/localStorage";
 import Auth from "../utils/auth";
 
 const SearchMovies = () => {
+  const [displayMovies, setDisplayMovies] = useState([]);
+
   // create state for holding returned google api data
   const [searchedMovies, setSearchedMovies] = useState([]);
+
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
 
@@ -28,10 +31,96 @@ const SearchMovies = () => {
   const [saveMovie, { error }] = useMutation(SAVE_MOVIE);
 
   // set up useEffect hook to save `savedMovieIds` list to localStorage on component unmount
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
+  // useEffect(() => {
+  //   // console.log(savedMovieIds);
+  //   return () => saveMovieIds(savedMovieIds);
+  // }, [savedMovieIds]);
+
+  function handleLoad() {
+    const https = require("https");
+    const url =
+      "https://api.themoviedb.org/3/movie/now_playing?api_key=018c380ce92d45e85123258d739abb6e&language=en-US&page=1";
+    https.get(url, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        const movieData = data.results.map((movie) => ({
+          movieId: movie.id,
+          releaseDate: movie.release_date || movie.publishedDate || "TBA",
+          title: movie.title || movie.name,
+          description: movie.overview,
+          image:
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
+        }));
+        setDisplayMovies(movieData);
+      });
+    });
+  }
+
+  function handleTrending() {
+    const https = require("https");
+    const url =
+      "https://api.themoviedb.org/3/trending/all/day?api_key=018c380ce92d45e85123258d739abb6e";
+    https.get(url, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        const movieData = data.results.map((movie) => ({
+          movieId: movie.id,
+          releaseDate: movie.release_date || movie.publishedDate || "TBA",
+          title: movie.title || movie.name,
+          description: movie.overview,
+          image:
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
+        }));
+        setDisplayMovies(movieData);
+      });
+    });
+  }
+
+  function handleDiscover() {
+    const https = require("https");
+    const url =
+      "https://api.themoviedb.org/3/discover/movie?api_key=018c380ce92d45e85123258d739abb6e&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
+    https.get(url, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        const movieData = data.results.map((movie) => ({
+          movieId: movie.id,
+          releaseDate: movie.release_date || movie.publishedDate || "TBA",
+          title: movie.title || movie.name,
+          description: movie.overview,
+          image:
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
+        }));
+        setDisplayMovies(movieData);
+      });
+    });
+  }
+
+  //  initial load
   useEffect(() => {
-    return () => saveMovieIds(savedMovieIds);
-  });
+    handleLoad();
+  }, []);
 
   // create method to search for movies and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -40,40 +129,39 @@ const SearchMovies = () => {
     if (!searchInput) {
       return false;
     }
-    // --------------------  revise url ------------------- //
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=018c380ce92d45e85123258d739abb6e&query=${searchInput}`
-      );
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const { results } = await response.json();
-
-      const movieData = results.map((movie) => ({
-        movieId: movie.id,
-        authors: movie.release_date || ["No release date"],
-        title: movie.title,
-        description: movie.overview,
-        image: `https://image.tmdb.org/t/p/w500${movie.id}` || "",
-      }));
-      // --------------------  revise url ------------------- //
-
-      setSearchedMovies(movieData);
-      setSearchInput("");
-    } catch (error) {
-      console.error(error);
-    }
+    const https = require("https");
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=018c380ce92d45e85123258d739abb6e&query=${searchInput}`;
+    https.get(url, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        const movieData = data.results.map((movie) => ({
+          movieId: movie.id,
+          releaseDate: movie.release_date || movie.publishedDate || "TBA",
+          title: movie.title,
+          description: movie.overview,
+          image:
+            movie.poster_path !== null || movie.backdrop_path !== null
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` ||
+                `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png",
+        }));
+        setDisplayMovies(movieData);
+        setSearchInput("");
+      });
+    });
   };
 
   // create function to handle saving a movie to our database
   const handleSaveMovie = async (movieId) => {
     // find the movie in `searchedMovies` state by the matching id
-    const movieToSave = searchedMovies.find(
-      (movie) => movie.movieId === movieId
-    );
+    const movieToSave =
+      searchedMovies.find((movie) => movie.movieId === movieId) ||
+      displayMovies.find((movie) => movie.movieId === movieId);
 
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -89,8 +177,16 @@ const SearchMovies = () => {
         // user inputs
         variables: { movieData: { ...movieToSave } },
       });
-      console.log(savedMovieIds);
+
       // take the token and will set it to localStorage
+      const currentLocalMovieIds =
+        JSON.parse(localStorage.getItem("saved_movies")) || [];
+      currentLocalMovieIds.push(movieToSave.movieId);
+      localStorage.setItem(
+        "saved_movies",
+        JSON.stringify(currentLocalMovieIds)
+      );
+      // change button texts
       setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
     } catch (error) {
       console.error(error);
@@ -99,73 +195,150 @@ const SearchMovies = () => {
 
   return (
     <>
-      <Jumbotron fluid className="text-light bg-dark">
-        <Container>
-          <h1>Search for Movies!</h1>
-          <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
-              <Col xs={12} md={8}>
-                <Form.Control
-                  name="searchInput"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  type="text"
-                  size="lg"
-                  placeholder="Search for a movie"
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <Button type="submit" variant="success" size="lg">
-                  Submit Search
-                </Button>
-              </Col>
-            </Form.Row>
-          </Form>
-        </Container>
-      </Jumbotron>
-
-      <Container>
-        <h2>
-          {searchedMovies.length
-            ? `Viewing ${searchedMovies.length} results:`
-            : "Search for a movie to begin"}
-        </h2>
-        <CardColumns>
-          {searchedMovies.map((movie) => {
-            return (
-              <Card key={movie.movieId} border="dark">
-                {movie.image ? (
-                  <Card.Img
-                    src={movie.image}
-                    alt={`The cover for ${movie.title}`}
-                    variant="top"
-                  />
-                ) : null}
-                <Card.Body>
-                  <Card.Title>{movie.title}</Card.Title>
-                  <p className="small">Release Date: {movie.release_date}</p>
-                  <Card.Text>{movie.description}</Card.Text>
-                  {Auth.loggedIn() && (
+      <style type="text/css">
+        {`
+    .btn-flat {
+      background-color: rgba(0, 0, 0, 0);
+      color: #f8f9fa;
+    }`}
+      </style>
+      <div className="bg-image background-img">
+        <div className="mask">
+          <Jumbotron
+            fluid
+            className="text-light bg-color py-4 container-fluid jumbotron"
+          >
+            <Container>
+              <Form onSubmit={handleFormSubmit}>
+                <Form.Row>
+                  <Col xs={12} md={4}>
                     <Button
-                      disabled={savedMovieIds?.some(
-                        (savedMovieId) => savedMovieId === movie.movieId
-                      )}
-                      className="btn-block btn-info"
-                      onClick={() => handleSaveMovie(movie.movieId)}
+                      className="m-2 border border-light rounded text-light"
+                      type="submit"
+                      variant="flat"
+                      size="lg"
+                      onClick={handleTrending}
                     >
-                      {savedMovieIds?.some(
-                        (savedMovieId) => savedMovieId === movie.movieId
-                      )
-                        ? "Already been saved!"
-                        : "Save this Movie!"}
+                      Trending
                     </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </CardColumns>
-      </Container>
+                    <Button
+                      className="m-2 border border-light rounded text-light"
+                      type="submit"
+                      variant="flat"
+                      size="lg"
+                      onClick={handleDiscover}
+                    >
+                      Discover
+                    </Button>
+                  </Col>
+                  <Col xs={12} md={5}>
+                    <Form.Control
+                      className="m-2 border border-light rounded"
+                      name="searchInput"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      type="text"
+                      size="lg"
+                      placeholder="Search for a movie by name"
+                    />
+                  </Col>
+                  <Col xs={12} md={3}>
+                    <Button
+                      type="submit"
+                      variant="flat"
+                      size="lg"
+                      className="m-2 border border-light rounded text-light"
+                    >
+                      Search
+                    </Button>
+                  </Col>
+                </Form.Row>
+              </Form>
+            </Container>
+          </Jumbotron>
+
+          <Container className="text-center">
+            <h2 className="md-2 recommendations">
+              {searchedMovies.length
+                ? `Viewing ${searchedMovies.length} results:`
+                : "Recommendations for you!"}
+            </h2>
+            <CardColumns>
+              {searchedMovies.length
+                ? searchedMovies.map((movie) => {
+                    return (
+                      <Card key={movie.movieId}>
+                        {movie.image ? (
+                          <Card.Img
+                            src={movie.image}
+                            alt={`The cover for ${movie.title}`}
+                            variant="top"
+                          />
+                        ) : null}
+                        <Card.Body>
+                          <Card.Title>{movie.title}</Card.Title>
+                          <p className="small">
+                            Release Date: {movie.releaseDate}
+                          </p>
+                          <Card.Text>{movie.description}</Card.Text>
+                          {Auth.loggedIn() && (
+                            <Button
+                              disabled={savedMovieIds?.some(
+                                (savedMovieId) => savedMovieId === movie.movieId
+                              )}
+                              className="btn-block btn-info mt-2"
+                              onClick={() => handleSaveMovie(movie.movieId)}
+                            >
+                              {savedMovieIds?.some(
+                                (savedMovieId) => savedMovieId === movie.movieId
+                              )
+                                ? "Saved!"
+                                : "Add to Watchlist!"}
+                            </Button>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    );
+                  })
+                : displayMovies.map((movie) => {
+                    return (
+                      <Card key={movie.movieId}>
+                        {movie.image ? (
+                          <Card.Img
+                            src={movie.image}
+                            alt={`The cover for ${movie.title}`}
+                            variant="top"
+                          />
+                        ) : null}
+                        <Card.Body>
+                          <Card.Title>{movie.title}</Card.Title>
+                          <p className="small">
+                            Release Date: {movie.releaseDate}
+                          </p>
+                          <Card.Text>{movie.description}</Card.Text>
+                          {Auth.loggedIn() && (
+                            <Button
+                              disabled={savedMovieIds?.some(
+                                (savedMovieId) => savedMovieId === movie.movieId
+                              )}
+                              className="btn-block btn-info mt-2"
+                              onClick={() => handleSaveMovie(movie.movieId)}
+                            >
+                              {savedMovieIds?.some(
+                                (savedMovieId) => savedMovieId === movie.movieId
+                              )
+                                ? "Saved!"
+                                : "Add to Watchlist!"}
+                            </Button>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    );
+                  })}
+            </CardColumns>
+          </Container>
+        </div>
+      </div>
     </>
   );
 };

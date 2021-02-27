@@ -1,7 +1,5 @@
 export const getSavedMovieIds = () => {
-  const savedMovieIds = localStorage.getItem("saved_movies")
-    ? JSON.parse(localStorage.getItem("saved_movies"))
-    : [];
+  const savedMovieIds = JSON.parse(localStorage.getItem("saved_movies")) || [];
 
   return savedMovieIds;
 };
@@ -24,7 +22,7 @@ export const removeMovieId = (movieId) => {
   }
 
   const updatedSavedMovieIds = savedMovieIds?.filter(
-    (savedMovieId) => savedMovieId !== movieId
+    (savedMovieId) => savedMovieId !== parseInt(movieId)
   );
   localStorage.setItem("saved_movies", JSON.stringify(updatedSavedMovieIds));
 

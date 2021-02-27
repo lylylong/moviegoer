@@ -1,78 +1,139 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Navbar, Nav, Container, Modal, Tab } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+// import { Navbar, Nav, Container, Modal } from "react-bootstrap";
 import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
-
 import Auth from "../utils/auth";
+
+import {
+  Link,
+  Box,
+  Text,
+  Stack,
+  Flex,
+  useColorModeValue,
+  useDisclosure,
+  Button,
+  // Lorem,
+  // Modal,
+  // ModalOverlay,
+  // ModalContent,
+  // ModalHeader,
+  // ModalFooter,
+  // ModalBody,
+  // ModalCloseButton,
+  Input,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
+
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
+  const [isOpenToggle, setIsOpen] = React.useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+  const toggle = () => setIsOpen(!isOpenToggle);
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Container fluid>
-          <Navbar.Brand as={Link} to="/">
-            Moviegoer
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar" />
-          <Navbar.Collapse id="navbar">
-            <Nav className="ml-auto">
-              <Nav.Link as={Link} to="/">
-                Search Movies
-              </Nav.Link>
+      <Box>
+        <Flex
+          as="nav"
+          align="center"
+          justify="space-between"
+          wrap="wrap"
+          w="100%"
+          p={6}
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.600", "white")}
+        >
+          <Box w="150px" color={["primary.500", "primary.500"]}>
+            <Link href="/">
+              <Text fontSize="lg" fontWeight="bold" fontSize="2xl">
+                Moviegoer
+              </Text>
+            </Link>
+          </Box>
+
+          <Box display={{ base: "block", md: "none" }} onClick={toggle}>
+            {isOpenToggle ? <CloseIcon /> : <HamburgerIcon />}
+          </Box>
+
+          <Box
+            display={{ base: isOpenToggle ? "block" : "none", md: "block" }}
+            flexBasis={{ base: "100%", md: "auto" }}
+          >
+            <Stack
+              spacing={8}
+              align="center"
+              justify={["center", "space-between", "flex-end", "flex-end"]}
+              direction={["column", "row", "row", "row"]}
+              pt={[4, 4, 0, 0]}
+            >
+              <Link display="block" href="/">
+                <Text>Home</Text>
+              </Link>
+
               {/* if user is logged in show saved movies and logout */}
               {Auth.loggedIn() ? (
                 <>
-                  <Nav.Link as={Link} to="/saved">
-                    See Your Movies
-                  </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                  <Link href="/saved">
+                    <Text display="block">Your Watchlist</Text>
+                  </Link>
+                  <Link onClick={Auth.logout}>Logout</Link>
                 </>
               ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>
+                <Button ref={btnRef} colorScheme="telegram" onClick={onOpen}>
                   Login/Sign Up
-                </Nav.Link>
+                </Button>
+                /*<Link onClick={() => setShowModal(true)}>Login/Sign Up</Link>*/
               )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      {/* set modal data up */}
-      <Modal
-        size="lg"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby="signup-modal"
+            </Stack>
+          </Box>
+        </Flex>
+      </Box>
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
       >
-        {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey="login">
-          <Modal.Header closeButton>
-            <Modal.Title id="signup-modal">
-              <Nav variant="pills">
-                <Nav.Item>
-                  <Nav.Link eventKey="login">Login</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="signup">Sign Up</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tab.Content>
-              <Tab.Pane eventKey="login">
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-              <Tab.Pane eventKey="signup">
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-            </Tab.Content>
-          </Modal.Body>
-        </Tab.Container>
-      </Modal>
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+
+            <Tabs>
+              <TabList>
+                <Tab>Login</Tab>
+                <Tab>Sign Up</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <LoginForm handleModalClose={() => setShowModal(false)} />
+                </TabPanel>
+                <TabPanel>
+                  <SignUpForm handleModalClose={() => setShowModal(false)} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </>
   );
 };
