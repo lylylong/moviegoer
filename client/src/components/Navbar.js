@@ -60,9 +60,14 @@ const AppNavbar = () => {
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.600", "white")}
         >
-          <Box w="150px" color={["primary.500", "primary.500"]}>
-            <Link href="/">
-              <Text fontSize="lg" fontWeight="bold" fontSize="2xl">
+          <Box w="300px" color={["primary.500", "primary.500"]}>
+            <Link href="/" style={{ textDecoration: "none" }}>
+              <Text
+                fontSize="lg"
+                fontWeight="bold"
+                fontSize="2xl"
+                className="main-header"
+              >
                 Moviegoer
               </Text>
             </Link>

@@ -52,3 +52,6 @@ h6 {
 .fw-bolder {
   font-weight: 800;
 }
+.main-header:hover {
+  color: rgb(71, 161, 221);
+}
